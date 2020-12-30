@@ -9,7 +9,9 @@ const Sidedrawer = (props) => {
 
     return (
         <div className = {classes.Sidedrawer}> 
-            <Logo height = "11%"/>
+            <div className = {classes.Logo}>
+            <Logo />
+            </div>
             <nav>
                 <NavigationItems/>
             </nav>
