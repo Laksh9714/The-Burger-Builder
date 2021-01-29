@@ -85,9 +85,11 @@ class ContactData extends Component{
                         {value : 'cheapest', displayValue : 'Cheapest'}
                     ]
                 },
-                value : ''
+                value : '',
+                valid : true
             }  
-        },    
+        },   
+        formisValid : false, 
         loading : false
     }
 
@@ -153,8 +155,13 @@ class ContactData extends Component{
         updatedFormElement.valid = this.checkValidation(updatedFormElement.value, updatedFormElement.validation);
         updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
-        console.log(updatedFormElement);
-        this.setState({orderForm : updatedOrderForm});
+        
+        const formisValid = true;
+        for(let inputIdentifier in updatedOrderForm){
+            formisValid = updatedOrderForm[inputIdentifier].valid && formisValid;
+        }
+
+        this.setState({orderForm : updatedOrderForm, formisValid: formisValid});
     }
 
     render(){
@@ -186,7 +193,7 @@ class ContactData extends Component{
                         shouldValidate = {formElement.config.validation}
                         touched = {formElement.config.touched}/>
                 ))}
-                <Button btnType = "Success" clicked = {this.orderHandler}>Order</Button>
+                <Button btnType = "Success" disabled = {!this.state.formisValid} clicked = {this.orderHandler}>Order</Button>
             </form>
         );
 
