@@ -1,6 +1,7 @@
 
 import { bindActionCreators } from 'redux';
 import * as actionTypes from '../actions/actionTypes';
+import { setIngredients } from '../actions/burgerBuilder';
 import { updateObject } from '../utility';
 
 const initialState = {
@@ -16,11 +17,8 @@ const INGREDIENT_PRICES = {
     bacon : 0.7
 };
 
-const reducer = (state = initialState , action) => {
-    switch(action.type){
-        case actionTypes.ADD_INGREDIENT:
-
-            const updatedIngredient = { [action.ingredientName] : state.ingredients[action.ingredientName] + 1 }
+const addIngredient = (state,action) => {
+    const updatedIngredient = { [action.ingredientName] : state.ingredients[action.ingredientName] + 1 }
 
             const updatedIngredients = updateObject(state.ingredients,updatedIngredient);
 
@@ -30,25 +28,41 @@ const reducer = (state = initialState , action) => {
             }
 
             return updateObject(state , updatedState);
+}
 
-        case actionTypes.REMOVE_INGREDIENT:
-            const updatedIng = { [action.ingredientName] : state.ingredients[action.ingredientName] - 1 }
 
-            const updatedIngs = updateObject(state.ingredients,updatedIngredient);
+const removeIngredient = (state,action) => {
+    const updatedIng = { [action.ingredientName] : state.ingredients[action.ingredientName] - 1 }
+
+            const updatedIngs = updateObject(state.ingredients,updatedIng);
 
             const updatedSt = {
                 ingredients : updatedIngs,
                 totalprice : state.totalprice - INGREDIENT_PRICES[action.ingredientName]
             }
+
             return updateObject(state , updatedSt);
+}
+
+const setIngredient = (state,action) => {
+    return updateObject(state , {
+        ingredients : action.ingredients,
+        totalprice : 4,
+        error : false
+    });
+}
+
+const reducer = (state = initialState , action) => {
+    switch(action.type){
+        case actionTypes.ADD_INGREDIENT:
+            return addIngredient(state,action);
+
+        case actionTypes.REMOVE_INGREDIENT:
+            return removeIngredient(state,action);
             
         case actionTypes.SET_INGREDIENTS:
-            return updateObject(state , {
-                ingredients : action.ingredients,
-                totalprice : 4,
-                error : false
-            });
-
+            return setIngredient(state,action);
+           
         case actionTypes.FETCH_INGREDIENTS_FAILED:
             return updateObject(state , {error : true});
         
