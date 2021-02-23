@@ -40,7 +40,8 @@ class Auth extends Component{
                 valid : false,
                 touched : false
             }
-        }
+        },
+        isSignup : true
     }
 
     checkValidation(value,rules){
@@ -113,6 +114,7 @@ class Auth extends Component{
                     {form}
                     <Button btnType = "Success">Submit</Button>
                 </form>
+                <Button btnType = "Danger">Switch to Sign in</Button>
             </div>
         );
     }
